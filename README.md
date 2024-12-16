@@ -2,10 +2,10 @@
 ## Team N:
 
 * _(ID, Name, Surname)_
-* Student N1:
-* Student N2:
-* Student N3:
-* Student N4:
+* Student N1: ID13373 , Islombek Ostonbekov
+* Student N2: ID13114 , Mansurkhodjayev Khojiakbar
+* Student N3: ID13383 , Muhammadrasul Jakbarov
+* Student N4: ID13069 , Muzafar Ikramov
 
 # Expense Tracker: Project Description
 
