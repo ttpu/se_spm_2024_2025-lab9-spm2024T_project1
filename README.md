@@ -1,9 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Z2qKazcY)
-## Team N:
+## Team N:4
 
 * _(ID, Name, Surname)_
-* Student N1:
-* Student N2:
+* Student N1:se13418 Yusufbek Botirov
+* Student N2:se13091 Nurulla Khikmatov
 * Student N3:
 * Student N4:
 
