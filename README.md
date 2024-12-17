@@ -5,7 +5,7 @@
 * Student N1:se13418 Yusufbek Botirov
 * Student N2:se13091 Nurulla Khikmatov
 * Student N3:se13368 Elyor Norbo'tayev
-* Student N4:
+* Student N4:se13515 Zarif Bakhtiyoro'v
 
 # Expense Tracker: Project Description
 
