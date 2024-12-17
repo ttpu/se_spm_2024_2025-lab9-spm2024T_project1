@@ -4,7 +4,7 @@
 * _(ID, Name, Surname)_
 * Student N1:se13418 Yusufbek Botirov
 * Student N2:se13091 Nurulla Khikmatov
-* Student N3:
+* Student N3:se13368 Elyor Norbo'tayev
 * Student N4:
 
 # Expense Tracker: Project Description
