@@ -1,0 +1,64 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Build the Docker image
+    - name: Build Docker image
+      run: docker build -t spm24_project0:latest .
+
+    # Step 3: Save the Docker image to a tarball
+    - name: Save Docker image
+      run: docker save spm24_project0:latest > spm24_project0.tar
+
+    # Step 4: Transfer the Docker image to the server
+    - name: Transfer Docker image to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        source: spm24_project0.tar
+        target: /home/azureuser/spm24_project0.tar
+
+    # Step 5: Test the Docker container
+    - name: Test Docker container
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          sudo systemctl start docker || { echo "Docker service failed to start"; exit 1; }
+          ls -l /home/azureuser/spm24_project0.tar/spm24_project0.tar || { echo "Tarball not found"; exit 1; }
+          docker load < /home/azureuser/spm24_project0.tar/spm24_project0.tar || { echo "Docker load failed"; exit 1; }
+          docker images || { echo "No images found"; exit 1; }
+          docker stop spm24_test_project0 || true
+          docker rm spm24_test_project0 || true
+          docker run --rm --name spm24_test_project0 -p 5001:5000 spm24_project0:latest &
+          sleep 10
+          curl -f http://localhost:5001 || { docker stop spm24_test_project0; exit 1; }
+          docker stop spm24_test_project0
+
+    # Step 6: Deploy the Docker container
+    - name: Deploy Docker container
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          docker stop spm24_project0 || { echo "No running container to stop"; }
+          docker rm spm24_project0 || { echo "No container to remove"; }
+          docker run -d --name spm24_project0 -p 5000:5000 spm24_project0:latest
