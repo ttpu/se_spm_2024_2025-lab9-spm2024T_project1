@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Expense Tracker</h1>
+
+        <div class="mt-4 mb-4">
+            <h4>Summary</h4>
+            <p>Total Expenses: {{ total_expenses }}</p>
+            <p>Total Amount Spent: ${{ total_amount }}</p>
+            <ul>
+                {% for category, amount in category_summary.items() %}
+                    <li>{{ category }}: ${{ amount }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Add Expense</h5>
+                <form action="/add" method="POST">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" name="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" name="title" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="Food">Food</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" id="amount" name="amount" class="form-control" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
