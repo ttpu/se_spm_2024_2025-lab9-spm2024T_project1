@@ -3,7 +3,7 @@
 ## Port number of your server:
 * Your Team Number determines which port you are ALLOWED to use.
 * For example, if your Team Number = 3, server port number should be `5030`
-* If your Team number = 5, server port number should be `5010`
+* If your Team number = 5, server port number should be `5050`
 * In general, given Team Number `X`, server port should be `50X0`
 
 ## Change  `Dockerfile` content according to your server port:
