@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Expense Tracker</h1>
+
+        <div class="mt-4 mb-4">
+            <h4>Summary</h4>
+            <p>Total Expenses: {{ total_expenses }}</p>
+            <p>Total Amount Spent: ${{ total_amount }}</p>
+            <ul>
+                {% for category, amount in category_summary.items() %}
+                    <li>{{ category }}: ${{ amount }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Add Expense</h5>
+                <form action="/add" method="POST">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" name="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" name="title" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="Food">Food</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" id="amount" name="amount" class="form-control" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5>Expenses</h5>
+                <div class="mb-3">
+                    <label for="sort" class="form-label">Sort By:</label>
+                    <select id="sort" class="form-select" onchange="sortExpenses()">
+                        <option value="date">Date</option>
+                        <option value="title">Title</option>
+                        <option value="category">Category</option>
+                        <option value="amount">Amount</option>
+                    </select>
+                </div>
+                <table class="table table-bordered" id="expenseTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.title }}</td>
+                                <td>{{ expense.category }}</td>
+                                <td>${{ expense.amount }}</td>
+                                <td>
+                                    <form action="/delete/{{ loop.index0 }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                    <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ loop.index0 }}">Edit</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function sortExpenses() {
+            const table = document.getElementById('expenseTable');
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const sortBy = document.getElementById('sort').value;
+
+            rows.sort((a, b) => {
+                const aValue = a.querySelector(td:nth-child(${getColumnIndex(sortBy)})).innerText;
+                const bValue = b.querySelector(td:nth-child(${getColumnIndex(sortBy)})).innerText;
+
+                if (sortBy === 'amount') {
+                    return parseFloat(aValue.slice(1)) - parseFloat(bValue.slice(1));
+                } else if (sortBy === 'date') {
+                    return new Date(aValue) - new Date(bValue);
+                } else {
+                    return aValue.localeCompare(bValue);
+                }
+            });
+
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        function getColumnIndex(sortBy) {
+            switch (sortBy) {
+                case 'date': return 1;
+                case 'title': return 2;
+                case 'category': return 3;
+                case 'amount': return 4;
+                default: return 1;
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>
