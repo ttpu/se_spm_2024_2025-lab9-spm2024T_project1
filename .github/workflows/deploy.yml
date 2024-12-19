@@ -44,12 +44,12 @@ jobs:
           ls -l /home/azureuser/spm24_project6.tar/spm24_project6.tar || { echo "Tarball not found"; exit 1; }
           docker load < /home/azureuser/spm24_project6.tar/spm24_project6.tar || { echo "Docker load failed"; exit 1; }
           docker images || { echo "No images found"; exit 1; }
-          docker stop spm24_test_project0 || true
-          docker rm spm24_test_project0 || true
-          docker run --rm --name spm24_test_project0 -p 5061:5060 spm24_project6:latest &
+          docker stop spm24_test_project6 || true
+          docker rm spm24_test_project6 || true
+          docker run --rm --name spm24_test_project6 -p 5061:5060 spm24_project6:latest &
           sleep 10
-          curl -f http://localhost:5061 || { docker stop spm24_test_project0; exit 1; }
-          docker stop spm24_test_project0
+          curl -f http://localhost:5061 || { docker stop spm24_test_project6; exit 1; }
+          docker stop spm24_test_project6
 
     # Step 6: Deploy the Docker container
     - name: Deploy Docker container
